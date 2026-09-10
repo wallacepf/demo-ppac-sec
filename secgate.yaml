@@ -1,0 +1,50 @@
+template:
+  name: CI Security Gates
+  type: StepGroup
+  projectIdentifier: Demo_Quinto_Andar
+  orgIdentifier: default
+  spec:
+    steps:
+      - parallel:
+          - step:
+              type: HarnessSAST
+              name: Harness Code SCA
+              identifier: Harness_Code_SCA
+              spec:
+                mode: orchestration
+                config: sast
+                target:
+                  type: repository
+                  detection: auto
+                advanced:
+                  log:
+                    level: info
+          - step:
+              type: Owasp
+              name: OWASP
+              identifier: OWASP
+              spec:
+                mode: orchestration
+                config: default
+                target:
+                  type: repository
+                  detection: auto
+                advanced:
+                  log:
+                    level: info
+      - step:
+          type: HarnessSAST
+          name: Harness Code SAST
+          identifier: Harness_Code_SAST
+          spec:
+            mode: orchestration
+            config: sast
+            target:
+              type: repository
+              detection: auto
+            advanced:
+              log:
+                level: info
+    stageType: CI
+  versionLabel: "1.0"
+  identifier: CI_Security_Gates
